@@ -48,6 +48,21 @@
         <div class="invalid-feedback">Max 200 tecken.</div>
       </div>
 
+      <div class="mb-3">
+        <label for="book" class="form-label fw-medium">
+          Bok <span class="text-body-secondary fw-normal">(valfritt)</span>
+        </label>
+        <input
+          id="book"
+          type="text"
+          class="form-control"
+          formControlName="book"
+          placeholder="Vilken bok citatet kommer från"
+          [class.is-invalid]="form.controls.book.touched && form.controls.book.invalid"
+        />
+        <div class="invalid-feedback">Max 200 tecken.</div>
+      </div>
+
       <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary" [disabled]="saving()">
           @if (saving()) {
@@ -84,8 +99,18 @@
         <blockquote class="quote-card__body">
           <i class="fa-solid fa-quote-left quote-card__mark" aria-hidden="true"></i>
           <p class="quote-card__text">{{ quote.text }}</p>
-          @if (quote.author) {
-            <figcaption class="quote-card__author">{{ quote.author }}</figcaption>
+          @if (quote.author || quote.book) {
+            <figcaption class="quote-card__author">
+              @if (quote.author) {
+                {{ quote.author }}
+              }
+              @if (quote.author && quote.book) {
+                <span>,</span>
+              }
+              @if (quote.book) {
+                <cite class="quote-card__book">{{ quote.book }}</cite>
+              }
+            </figcaption>
           }
         </blockquote>
         <div class="quote-card__actions">

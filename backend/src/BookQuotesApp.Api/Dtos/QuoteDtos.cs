@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookQuotesApp.Api.Dtos;
 
-public record QuoteResponse(int Id, string Text, string? Author);
+public record QuoteResponse(int Id, string Text, string? Author, string? Book);
 
 public class QuoteRequest
 {
@@ -12,4 +12,7 @@ public class QuoteRequest
 
     [MaxLength(200)]
     public string? Author { get; set; }
+
+    [MaxLength(200)]
+    public string? Book { get; set; }
 }

@@ -10,9 +10,13 @@ public class Quote
     [MaxLength(1000)]
     public string Text { get; set; } = string.Empty;
 
-    /// <summary>Who said or wrote the quote (person or book).</summary>
+    /// <summary>Who said or wrote the quote.</summary>
     [MaxLength(200)]
     public string? Author { get; set; }
+
+    /// <summary>The book the quote is from (optional).</summary>
+    [MaxLength(200)]
+    public string? Book { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

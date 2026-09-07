@@ -26,6 +26,7 @@ export class QuoteList {
   protected readonly form = this.fb.nonNullable.group({
     text: ['', [Validators.required, Validators.maxLength(1000)]],
     author: ['', [Validators.maxLength(200)]],
+    book: ['', [Validators.maxLength(200)]],
   });
 
   constructor() {
@@ -49,13 +50,17 @@ export class QuoteList {
 
   startAdd(): void {
     this.editingId.set(null);
-    this.form.reset({ text: '', author: '' });
+    this.form.reset({ text: '', author: '', book: '' });
     this.formOpen.set(true);
   }
 
   startEdit(quote: Quote): void {
     this.editingId.set(quote.id);
-    this.form.reset({ text: quote.text, author: quote.author ?? '' });
+    this.form.reset({
+      text: quote.text,
+      author: quote.author ?? '',
+      book: quote.book ?? '',
+    });
     this.formOpen.set(true);
   }
 
@@ -74,7 +79,11 @@ export class QuoteList {
     this.error.set(null);
 
     const raw = this.form.getRawValue();
-    const payload = { text: raw.text.trim(), author: raw.author.trim() || null };
+    const payload = {
+      text: raw.text.trim(),
+      author: raw.author.trim() || null,
+      book: raw.book.trim() || null,
+    };
     const id = this.editingId();
 
     const request$: Observable<unknown> =

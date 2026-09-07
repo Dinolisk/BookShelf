@@ -250,6 +250,10 @@ a {
   content: '\2014\00a0'; /* em dash + nbsp */
 }
 
+.quote-card__book {
+  font-style: italic;
+}
+
 .quote-card__actions {
   display: flex;
   justify-content: flex-end;
