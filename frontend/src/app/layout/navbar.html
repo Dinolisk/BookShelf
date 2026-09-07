@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-md bg-body-tertiary border-bottom">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" routerLink="/books">
+      <i class="fa-solid fa-book-open-reader me-2"></i>BookQuotes
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNav"
+      aria-controls="mainNav"
+      aria-expanded="false"
+      aria-label="Växla navigering"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/books" routerLinkActive="active">
+            <i class="fa-solid fa-book me-1"></i>Böcker
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/quotes" routerLinkActive="active">
+            <i class="fa-solid fa-quote-left me-1"></i>Mina citat
+          </a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        @if (auth.isLoggedIn()) {
+          <span class="navbar-text">
+            <i class="fa-solid fa-user me-1"></i>{{ auth.username() }}
+          </span>
+          <button class="btn btn-outline-secondary btn-sm" (click)="logout()">
+            <i class="fa-solid fa-right-from-bracket me-1"></i>Logga ut
+          </button>
+        } @else {
+          <a class="btn btn-primary btn-sm" routerLink="/login">
+            <i class="fa-solid fa-right-to-bracket me-1"></i>Logga in
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</nav>

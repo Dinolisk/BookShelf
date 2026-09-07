@@ -1,0 +1,14 @@
+/* Global styles. Bootstrap and Font Awesome are loaded via angular.json. */
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--bs-body-bg);
+}
+
+.nav-link.active {
+  font-weight: 600;
+}
