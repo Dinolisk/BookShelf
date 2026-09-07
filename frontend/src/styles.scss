@@ -132,9 +132,43 @@ a {
   border-left: 4px solid var(--bq-accent);
 }
 
-.quote-card blockquote {
-  font-size: 1.05rem;
-  line-height: 1.6;
+.quote-card__body {
+  margin: 0;
+  padding: 1.75rem 1.75rem 1.5rem;
+}
+
+.quote-card__mark {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-size: 1.4rem;
+  color: var(--bq-accent);
+  opacity: 0.3;
+}
+
+.quote-card__text {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.quote-card__author {
+  display: block;
+  margin-top: 1.25rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.quote-card__author::before {
+  content: '\2014\00a0'; /* em dash + nbsp */
+}
+
+.quote-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  border-top: 1px solid var(--bs-border-color);
 }
 
 /* --- Constrain long forms without pulling in grid gutters --- */

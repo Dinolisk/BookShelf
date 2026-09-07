@@ -80,14 +80,15 @@
 } @else {
   <div class="vstack gap-3">
     @for (quote of items(); track quote.id) {
-      <figure class="bq-card quote-card bg-body p-4 mb-0">
-        <blockquote class="mb-0">
-          <p class="mb-2">{{ quote.text }}</p>
+      <figure class="bq-card quote-card bg-body mb-0 overflow-hidden">
+        <blockquote class="quote-card__body">
+          <i class="fa-solid fa-quote-left quote-card__mark" aria-hidden="true"></i>
+          <p class="quote-card__text">{{ quote.text }}</p>
           @if (quote.author) {
-            <figcaption class="blockquote-footer mb-0">{{ quote.author }}</figcaption>
+            <figcaption class="quote-card__author">{{ quote.author }}</figcaption>
           }
         </blockquote>
-        <div class="d-flex justify-content-end gap-2 mt-3">
+        <div class="quote-card__actions">
           <button type="button" class="btn btn-sm btn-outline-secondary" (click)="startEdit(quote)">
             <i class="fa-solid fa-pen"></i><span class="d-none d-sm-inline ms-1">Redigera</span>
           </button>
