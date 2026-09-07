@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0"><i class="fa-solid fa-book me-2"></i>Böcker</h1>
+  <a routerLink="/books/new" class="btn btn-primary">
+    <i class="fa-solid fa-plus me-1"></i>Lägg till ny bok
+  </a>
+</div>
+
+@if (loading()) {
+  <div class="text-center py-5 text-body-secondary">
+    <span class="spinner-border spinner-border-sm me-2"></span>Laddar…
+  </div>
+} @else if (error()) {
+  <div class="alert alert-danger d-flex justify-content-between align-items-center">
+    <span>{{ error() }}</span>
+    <button class="btn btn-sm btn-outline-danger" (click)="load()">Försök igen</button>
+  </div>
+} @else if (items().length === 0) {
+  <div class="text-center py-5 text-body-secondary">
+    <i class="fa-solid fa-book-open fa-2x mb-3 d-block"></i>
+    Inga böcker än. Klicka på <strong>Lägg till ny bok</strong> för att börja.
+  </div>
+} @else {
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Titel</th>
+          <th scope="col">Författare</th>
+          <th scope="col">Publicerad</th>
+          <th scope="col" class="text-end">Åtgärder</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of items(); track book.id) {
+          <tr>
+            <td class="fw-medium">{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.publishedDate | date: 'y-MM-dd' }}</td>
+            <td class="text-end text-nowrap">
+              <a
+                [routerLink]="['/books', book.id, 'edit']"
+                class="btn btn-sm btn-outline-secondary me-2"
+              >
+                <i class="fa-solid fa-pen"></i><span class="d-none d-sm-inline ms-1">Redigera</span>
+              </a>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger"
+                (click)="remove(book)"
+                [disabled]="deletingId() === book.id"
+              >
+                <i class="fa-solid fa-trash"></i><span class="d-none d-sm-inline ms-1">Radera</span>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

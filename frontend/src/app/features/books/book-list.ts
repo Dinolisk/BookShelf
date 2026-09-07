@@ -1,17 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { BookService } from '../../core/book.service';
+import { Book } from '../../core/models';
 
 @Component({
   selector: 'app-book-list',
-  imports: [RouterLink],
-  template: `
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="h3 mb-0"><i class="fa-solid fa-book me-2"></i>Böcker</h1>
-      <a routerLink="/books/new" class="btn btn-primary">
-        <i class="fa-solid fa-plus me-1"></i>Lägg till ny bok
-      </a>
-    </div>
-    <p class="text-body-secondary">Boklistan byggs i steg 5.</p>
-  `,
+  imports: [RouterLink, DatePipe],
+  templateUrl: './book-list.html',
 })
-export class BookList {}
+export class BookList {
+  private books = inject(BookService);
+
+  protected readonly items = signal<Book[]>([]);
+  protected readonly loading = signal(true);
+  protected readonly error = signal<string | null>(null);
+  protected readonly deletingId = signal<number | null>(null);
+
+  constructor() {
+    this.load();
+  }
+
+  load(): void {
+    this.loading.set(true);
+    this.error.set(null);
+    this.books.list().subscribe({
+      next: (books) => {
+        this.items.set(books);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('Kunde inte hämta böckerna.');
+        this.loading.set(false);
+      },
+    });
+  }
+
+  remove(book: Book): void {
+    if (!confirm(`Radera "${book.title}"?`)) {
+      return;
+    }
+    this.deletingId.set(book.id);
+    this.books.delete(book.id).subscribe({
+      next: () => {
+        this.items.update((list) => list.filter((b) => b.id !== book.id));
+        this.deletingId.set(null);
+      },
+      error: () => {
+        this.error.set('Kunde inte radera boken.');
+        this.deletingId.set(null);
+      },
+    });
+  }
+}
