@@ -1,13 +1,38 @@
 /* Global styles. Bootstrap and Font Awesome are loaded via angular.json. */
 
+/* ============================================================
+   Design tokens
+   ------------------------------------------------------------
+   page-bg  = the app canvas (behind everything)
+   surface  = cards / navbar / raised panels (must contrast page-bg)
+   border   = every hairline in the UI
+   ============================================================ */
 :root {
   --bq-accent: #4f46e5;
   --bq-accent-hover: #4338ca;
+
+  --bq-page-bg: #eceef2;
+  --bq-surface: #ffffff;
+  --bq-border: #dbdfe6;
+
+  /* Align Bootstrap's own borders + focus ring with the tokens. */
+  --bs-border-color: var(--bq-border);
+  --bs-focus-ring-color: rgba(79, 70, 229, 0.25);
+  --bs-link-color-rgb: 79, 70, 229;
+  --bs-link-hover-color-rgb: 67, 56, 202;
 }
 
 :root[data-bs-theme='dark'] {
   --bq-accent: #818cf8;
   --bq-accent-hover: #a5b4fc;
+
+  --bq-page-bg: #131519;
+  --bq-surface: #1e2228;
+  --bq-border: #313741;
+
+  --bs-focus-ring-color: rgba(129, 140, 248, 0.28);
+  --bs-link-color-rgb: 165, 180, 252;
+  --bs-link-hover-color-rgb: 199, 210, 254;
 }
 
 html,
@@ -17,24 +42,25 @@ body {
 
 body {
   margin: 0;
-  background-color: var(--bs-body-bg);
+  background-color: var(--bq-page-bg);
+  color: var(--bs-body-color);
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Give the app a calm, elevated feel: tinted page, white/dark surfaces. */
-body {
-  background-color: var(--bs-tertiary-bg);
+/* --- Navbar: its own surface, clearly above the page --- */
+.navbar.bg-body-tertiary {
+  background-color: var(--bq-surface) !important;
 }
 
 .navbar {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
 .navbar-brand {
   letter-spacing: -0.01em;
 }
 
-/* --- Accent buttons --- */
+/* --- Accent --- */
 .btn-primary {
   --bs-btn-bg: var(--bq-accent);
   --bs-btn-border-color: var(--bq-accent);
@@ -55,7 +81,7 @@ a {
   color: var(--bq-accent) !important;
 }
 
-/* --- Page header (title + actions) --- */
+/* --- Page header --- */
 .page-header {
   display: flex;
   flex-wrap: wrap;
@@ -64,7 +90,7 @@ a {
   justify-content: space-between;
   margin-bottom: 1.75rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--bs-border-color);
+  border-bottom: 1px solid var(--bq-border);
 }
 
 .page-header__title {
@@ -78,15 +104,50 @@ a {
   color: var(--bs-secondary-color);
 }
 
-/* --- Cards --- */
-.card {
-  border-color: var(--bs-border-color);
+/* --- Cards / raised surfaces --- */
+.bq-card {
+  background-color: var(--bq-surface);
+  border: 1px solid var(--bq-border);
+  border-radius: 0.9rem;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 10px 26px rgba(15, 23, 42, 0.06);
 }
 
-.bq-card {
-  border: 1px solid var(--bs-border-color);
-  border-radius: 0.9rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.05);
+:root[data-bs-theme='dark'] .bq-card {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 10px 26px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Book grid card --- */
+.book-card {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--bq-accent) 45%, var(--bq-border));
+  box-shadow:
+    0 2px 4px rgba(15, 23, 42, 0.06),
+    0 16px 34px rgba(15, 23, 42, 0.12);
+}
+
+.book-card__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-card__author {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* --- Table --- */
@@ -105,7 +166,7 @@ a {
 /* --- Book cover --- */
 .book-cover {
   aspect-ratio: 2 / 3;
-  background: var(--bs-tertiary-bg);
+  background: var(--bq-page-bg);
   overflow: hidden;
 }
 
@@ -142,7 +203,7 @@ a {
   margin-bottom: 0.9rem;
   font-size: 1.4rem;
   color: var(--bq-accent);
-  opacity: 0.3;
+  opacity: 0.35;
 }
 
 .quote-card__text {
@@ -168,7 +229,7 @@ a {
   justify-content: flex-end;
   gap: 0.5rem;
   padding: 0.85rem 1.75rem;
-  border-top: 1px solid var(--bs-border-color);
+  border-top: 1px solid var(--bq-border);
 }
 
 /* --- Constrain long forms without pulling in grid gutters --- */
@@ -176,7 +237,7 @@ a {
   max-width: 34rem;
 }
 
-/* --- Split auth layout: brand panel beside the form --- */
+/* --- Split auth layout --- */
 .auth-split {
   display: grid;
   gap: 0;
@@ -186,8 +247,10 @@ a {
   margin-inline: auto;
   border-radius: 1rem;
   overflow: hidden;
-  border: 1px solid var(--bs-border-color);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--bq-border);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 16px 40px rgba(15, 23, 42, 0.1);
 }
 
 @media (min-width: 768px) {
@@ -220,7 +283,7 @@ a {
   display: flex;
   align-items: center;
   padding: 2rem 1.5rem;
-  background: var(--bs-body-bg);
+  background: var(--bq-surface);
 }
 
 @media (min-width: 768px) {
@@ -244,14 +307,14 @@ a {
   height: 4rem;
   margin-bottom: 1rem;
   border-radius: 50%;
-  background: var(--bs-tertiary-bg);
+  background: color-mix(in srgb, var(--bq-accent) 12%, transparent);
   color: var(--bq-accent);
   font-size: 1.5rem;
 }
 
 /* --- Footer --- */
 .app-footer {
-  border-top: 1px solid var(--bs-border-color);
+  border-top: 1px solid var(--bq-border);
   color: var(--bs-secondary-color);
   font-size: 0.875rem;
 }

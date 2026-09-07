@@ -19,7 +19,7 @@
 }
 
 @if (formOpen()) {
-  <div class="bq-card bg-body p-4 mb-4">
+  <div class="bq-card p-4 mb-4">
     <h2 class="h6 mb-3">{{ editingId() === null ? 'Nytt citat' : 'Redigera citat' }}</h2>
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <div class="mb-3">
@@ -68,7 +68,7 @@
     <span class="spinner-border spinner-border-sm me-2"></span>Laddar…
   </div>
 } @else if (items().length === 0 && !formOpen()) {
-  <div class="bq-card bg-body">
+  <div class="bq-card">
     <div class="empty-state">
       <span class="empty-state__icon"><i class="fa-solid fa-quote-right"></i></span>
       <p class="mb-3">Inga citat än. Spara dina favoritcitat ur böcker du gillar.</p>
@@ -80,7 +80,7 @@
 } @else {
   <div class="vstack gap-3">
     @for (quote of items(); track quote.id) {
-      <figure class="bq-card quote-card bg-body mb-0 overflow-hidden">
+      <figure class="bq-card quote-card mb-0 overflow-hidden">
         <blockquote class="quote-card__body">
           <i class="fa-solid fa-quote-left quote-card__mark" aria-hidden="true"></i>
           <p class="quote-card__text">{{ quote.text }}</p>

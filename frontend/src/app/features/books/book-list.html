@@ -22,7 +22,7 @@
     <button class="btn btn-sm btn-outline-danger" (click)="load()">Försök igen</button>
   </div>
 } @else if (items().length === 0) {
-  <div class="bq-card bg-body">
+  <div class="bq-card">
     <div class="empty-state">
       <span class="empty-state__icon"><i class="fa-solid fa-book-open"></i></span>
       <p class="mb-3">Inga böcker än. Lägg till din första bok för att komma igång.</p>
@@ -54,7 +54,7 @@
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 g-3 g-md-4">
       @for (book of visible(); track book.id) {
         <div class="col">
-          <article class="bq-card bg-body h-100 d-flex flex-column overflow-hidden">
+          <article class="bq-card book-card h-100 d-flex flex-column overflow-hidden">
             <div class="book-cover">
               @if (book.coverImageUrl) {
                 <img
@@ -71,8 +71,8 @@
             </div>
 
             <div class="p-3 d-flex flex-column flex-grow-1">
-              <h2 class="h6 mb-1 lh-sm">{{ book.title }}</h2>
-              <p class="small text-body-secondary mb-2">{{ book.author }}</p>
+              <h2 class="h6 mb-1 lh-sm book-card__title" [title]="book.title">{{ book.title }}</h2>
+              <p class="small text-body-secondary mb-2 book-card__author">{{ book.author }}</p>
               <p class="small text-body-secondary mb-3 mt-auto">
                 <i class="fa-regular fa-calendar me-1"></i>{{ book.publishedDate | date: 'y' }}
               </p>
