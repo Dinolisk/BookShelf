@@ -23,6 +23,7 @@ public class AuthController(AppDbContext db, ITokenService tokens) : ControllerB
         {
             Username = username,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            Books = DbSeeder.StarterBooks(),
             Quotes = DbSeeder.StarterQuotes(),
         };
 

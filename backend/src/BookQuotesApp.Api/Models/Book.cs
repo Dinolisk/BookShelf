@@ -20,4 +20,8 @@ public class Book
     public string? CoverImageUrl { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    // Each book belongs to the user who created it.
+    public int UserId { get; set; }
+    public User? User { get; set; }
 }

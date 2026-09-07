@@ -15,5 +15,6 @@ public class User
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    public ICollection<Book> Books { get; set; } = new List<Book>();
     public ICollection<Quote> Quotes { get; set; } = new List<Quote>();
 }

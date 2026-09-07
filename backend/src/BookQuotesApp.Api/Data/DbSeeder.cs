@@ -1,9 +1,8 @@
 using BookQuotesApp.Api.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookQuotesApp.Api.Data;
 
-/// <summary>Seeds a set of well-known books the first time the app runs against an empty database.</summary>
+/// <summary>Starter content attached to every new account (books and quotes are per-user).</summary>
 public static class DbSeeder
 {
     /// <summary>
@@ -44,23 +43,15 @@ public static class DbSeeder
         ("Don Quijote", "Miguel de Cervantes", 1605, "9780060934347"),
     ];
 
-    public static async Task SeedAsync(AppDbContext db)
-    {
-        if (await db.Books.AnyAsync())
-        {
-            return;
-        }
-
-        db.Books.AddRange(Seed.Select(b => new Book
+    /// <summary>The classic-books catalogue given to every new account so the Böcker view starts populated.</summary>
+    public static List<Book> StarterBooks() =>
+        Seed.Select(b => new Book
         {
             Title = b.Title,
             Author = b.Author,
             PublishedDate = new DateOnly(b.Year, 1, 1),
             CoverImageUrl = Cover(b.Isbn),
-        }));
-
-        await db.SaveChangesAsync();
-    }
+        }).ToList();
 
     /// <summary>Five favourite quotes given to every new account so the "Mina citat" view starts populated.</summary>
     public static List<Quote> StarterQuotes() =>

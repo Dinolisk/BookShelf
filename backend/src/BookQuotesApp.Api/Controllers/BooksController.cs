@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using BookQuotesApp.Api.Data;
 using BookQuotesApp.Api.Dtos;
 using BookQuotesApp.Api.Models;
@@ -12,10 +13,14 @@ namespace BookQuotesApp.Api.Controllers;
 [Route("api/[controller]")]
 public class BooksController(AppDbContext db) : ControllerBase
 {
+    private int CurrentUserId =>
+        int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BookResponse>>> GetAll()
     {
         var books = await db.Books
+            .Where(b => b.UserId == CurrentUserId)
             .OrderByDescending(b => b.CreatedAt)
             .Select(b => new BookResponse(b.Id, b.Title, b.Author, b.PublishedDate, b.CoverImageUrl))
             .ToListAsync();
@@ -26,7 +31,8 @@ public class BooksController(AppDbContext db) : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<BookResponse>> GetById(int id)
     {
-        var book = await db.Books.FindAsync(id);
+        var book = await db.Books
+            .FirstOrDefaultAsync(b => b.Id == id && b.UserId == CurrentUserId);
         if (book is null)
             return NotFound();
 
@@ -42,6 +48,7 @@ public class BooksController(AppDbContext db) : ControllerBase
             Author = request.Author,
             PublishedDate = request.PublishedDate,
             CoverImageUrl = Normalize(request.CoverImageUrl),
+            UserId = CurrentUserId,
         };
 
         db.Books.Add(book);
@@ -54,7 +61,8 @@ public class BooksController(AppDbContext db) : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, BookRequest request)
     {
-        var book = await db.Books.FindAsync(id);
+        var book = await db.Books
+            .FirstOrDefaultAsync(b => b.Id == id && b.UserId == CurrentUserId);
         if (book is null)
             return NotFound();
 
@@ -70,7 +78,8 @@ public class BooksController(AppDbContext db) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var book = await db.Books.FindAsync(id);
+        var book = await db.Books
+            .FirstOrDefaultAsync(b => b.Id == id && b.UserId == CurrentUserId);
         if (book is null)
             return NotFound();
 
