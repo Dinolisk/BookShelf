@@ -8,6 +8,12 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Render (and most PaaS) inject the port to listen on via $PORT. Locally it's unset,
+// so launchSettings keeps deciding the port.
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // --- Database ---
 var connectionString = DatabaseConnection.Resolve(builder.Configuration.GetConnectionString("Default"));
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -79,7 +85,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// In production TLS is terminated at the edge (Render / Vercel); the app only speaks HTTP.
+if (app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
+
 app.UseCors(CorsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();

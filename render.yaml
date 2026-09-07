@@ -1,0 +1,27 @@
+# Render Blueprint – deploys the .NET 9 API from backend/ as a Docker web service.
+# Secret values (marked sync:false) are entered in the Render dashboard, never in git.
+services:
+  - type: web
+    name: bookshelf-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    rootDir: backend
+    dockerfilePath: Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Jwt__Issuer
+        value: BookQuotesApp
+      - key: Jwt__Audience
+        value: BookQuotesApp
+      # --- set these in the dashboard ---
+      - key: ConnectionStrings__Default   # Neon connection string (URL form is fine)
+        sync: false
+      - key: Jwt__Key                     # long random string, same style as local user-secret
+        sync: false
+      - key: Cors__AllowedOrigins__0      # the Vercel URL, e.g. https://bookshelf.vercel.app
+        sync: false
