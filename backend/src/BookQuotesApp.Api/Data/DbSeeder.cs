@@ -6,8 +6,13 @@ namespace BookQuotesApp.Api.Data;
 /// <summary>Seeds a set of well-known books the first time the app runs against an empty database.</summary>
 public static class DbSeeder
 {
-    /// <summary>Open Library serves free cover images keyed by ISBN, no API key required.</summary>
-    private static string Cover(string isbn) => $"https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg";
+    /// <summary>
+    /// Open Library serves free cover images keyed by ISBN, no API key required.
+    /// `default=false` makes it return 404 (instead of a blank 1px image) when it has
+    /// no cover, so the UI falls back to its placeholder.
+    /// </summary>
+    private static string Cover(string isbn) =>
+        $"https://covers.openlibrary.org/b/isbn/{isbn}-L.jpg?default=false";
 
     private static readonly (string Title, string Author, int Year, string Isbn)[] Seed =
     [
@@ -31,7 +36,7 @@ public static class DbSeeder
         ("Frankenstein", "Mary Shelley", 1818, "9780141439471"),
         ("Dracula", "Bram Stoker", 1897, "9780141439846"),
         ("Dorian Grays porträtt", "Oscar Wilde", 1890, "9780141439570"),
-        ("Moby Dick", "Herman Melville", 1851, "9781503280786"),
+        ("Moby Dick", "Herman Melville", 1851, "9780142437247"),
         ("Räddaren i nöden", "J.D. Salinger", 1951, "9780316769488"),
         ("Slakthus 5", "Kurt Vonnegut", 1969, "9780385333849"),
         ("Moment 22", "Joseph Heller", 1961, "9781451626650"),
