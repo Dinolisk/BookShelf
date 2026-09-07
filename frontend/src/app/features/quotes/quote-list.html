@@ -1,0 +1,98 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0"><i class="fa-solid fa-quote-left me-2"></i>Mina citat</h1>
+  @if (!formOpen()) {
+    <button type="button" class="btn btn-primary" (click)="startAdd()">
+      <i class="fa-solid fa-plus me-1"></i>Lägg till citat
+    </button>
+  }
+</div>
+
+@if (error()) {
+  <div class="alert alert-danger">{{ error() }}</div>
+}
+
+@if (formOpen()) {
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="h6 mb-3">{{ editingId() === null ? 'Nytt citat' : 'Redigera citat' }}</h2>
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="mb-3">
+          <label for="text" class="form-label">Citat</label>
+          <textarea
+            id="text"
+            rows="3"
+            class="form-control"
+            formControlName="text"
+            [class.is-invalid]="form.controls.text.touched && form.controls.text.invalid"
+          ></textarea>
+          <div class="invalid-feedback">Citattext krävs (max 1000 tecken).</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="author" class="form-label">Författare <span class="text-body-secondary">(valfritt)</span></label>
+          <input
+            id="author"
+            type="text"
+            class="form-control"
+            formControlName="author"
+            [class.is-invalid]="form.controls.author.touched && form.controls.author.invalid"
+          />
+          <div class="invalid-feedback">Max 200 tecken.</div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary" [disabled]="saving()">
+            @if (saving()) {
+              <span class="spinner-border spinner-border-sm me-1"></span>
+            } @else {
+              <i class="fa-solid fa-floppy-disk me-1"></i>
+            }
+            Spara
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Avbryt</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (loading()) {
+  <div class="text-center py-5 text-body-secondary">
+    <span class="spinner-border spinner-border-sm me-2"></span>Laddar…
+  </div>
+} @else if (items().length === 0) {
+  <div class="text-center py-5 text-body-secondary">
+    <i class="fa-solid fa-quote-right fa-2x mb-3 d-block"></i>
+    Inga citat än. Lägg till dina favoritcitat med knappen ovan.
+  </div>
+} @else {
+  <div class="vstack gap-3">
+    @for (quote of items(); track quote.id) {
+      <figure class="card mb-0">
+        <blockquote class="card-body mb-0">
+          <p class="mb-2"><i class="fa-solid fa-quote-left text-body-secondary me-2"></i>{{ quote.text }}</p>
+          @if (quote.author) {
+            <figcaption class="blockquote-footer mb-0">{{ quote.author }}</figcaption>
+          }
+        </blockquote>
+        <div class="card-footer bg-transparent text-end">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary me-2"
+            (click)="startEdit(quote)"
+          >
+            <i class="fa-solid fa-pen"></i><span class="d-none d-sm-inline ms-1">Redigera</span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-danger"
+            (click)="remove(quote)"
+            [disabled]="deletingId() === quote.id"
+          >
+            <i class="fa-solid fa-trash"></i><span class="d-none d-sm-inline ms-1">Radera</span>
+          </button>
+        </div>
+      </figure>
+    }
+  </div>
+}
