@@ -17,43 +17,82 @@
     <div class="alert alert-danger">{{ error() }}</div>
   }
 
-  <div class="bq-card bg-body p-4 p-md-4 bq-form-narrow">
+  <div class="bq-card bg-body p-4">
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <div class="mb-3">
-        <label for="title" class="form-label fw-medium">Titel</label>
-        <input
-          id="title"
-          type="text"
-          class="form-control"
-          formControlName="title"
-          [class.is-invalid]="form.controls.title.touched && form.controls.title.invalid"
-        />
-        <div class="invalid-feedback">Titel krävs (max 200 tecken).</div>
+      <div class="row g-4">
+        <div class="col-12 col-md-7 col-lg-8">
+          <div class="mb-3">
+            <label for="title" class="form-label fw-medium">Titel</label>
+            <input
+              id="title"
+              type="text"
+              class="form-control"
+              formControlName="title"
+              [class.is-invalid]="form.controls.title.touched && form.controls.title.invalid"
+            />
+            <div class="invalid-feedback">Titel krävs (max 200 tecken).</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="author" class="form-label fw-medium">Författare</label>
+            <input
+              id="author"
+              type="text"
+              class="form-control"
+              formControlName="author"
+              [class.is-invalid]="form.controls.author.touched && form.controls.author.invalid"
+            />
+            <div class="invalid-feedback">Författare krävs (max 200 tecken).</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="publishedDate" class="form-label fw-medium">Publiceringsdatum</label>
+            <input
+              id="publishedDate"
+              type="date"
+              class="form-control"
+              formControlName="publishedDate"
+              [class.is-invalid]="form.controls.publishedDate.touched && form.controls.publishedDate.invalid"
+            />
+            <div class="invalid-feedback">Publiceringsdatum krävs.</div>
+          </div>
+
+          <div class="mb-0">
+            <label for="coverImageUrl" class="form-label fw-medium">
+              Omslagsbild (URL) <span class="text-body-secondary fw-normal">(valfritt)</span>
+            </label>
+            <input
+              id="coverImageUrl"
+              type="url"
+              class="form-control"
+              placeholder="https://…"
+              formControlName="coverImageUrl"
+              (input)="coverFailed.set(false)"
+            />
+            <div class="form-text">Klistra in en länk till en omslagsbild.</div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-5 col-lg-4">
+          <span class="form-label fw-medium d-block">Förhandsvisning</span>
+          <div class="book-cover bq-card mx-auto" style="max-width: 12rem">
+            @if (form.controls.coverImageUrl.value.trim() && !coverFailed()) {
+              <img
+                [src]="form.controls.coverImageUrl.value.trim()"
+                alt="Förhandsvisning av omslag"
+                (error)="coverFailed.set(true)"
+              />
+            } @else {
+              <div class="book-cover__placeholder"><i class="fa-solid fa-book"></i></div>
+            }
+          </div>
+          @if (coverFailed()) {
+            <p class="small text-danger mt-2 mb-0">Bilden kunde inte laddas – kontrollera länken.</p>
+          }
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label for="author" class="form-label fw-medium">Författare</label>
-        <input
-          id="author"
-          type="text"
-          class="form-control"
-          formControlName="author"
-          [class.is-invalid]="form.controls.author.touched && form.controls.author.invalid"
-        />
-        <div class="invalid-feedback">Författare krävs (max 200 tecken).</div>
-      </div>
-
-      <div class="mb-4">
-        <label for="publishedDate" class="form-label fw-medium">Publiceringsdatum</label>
-        <input
-          id="publishedDate"
-          type="date"
-          class="form-control"
-          formControlName="publishedDate"
-          [class.is-invalid]="form.controls.publishedDate.touched && form.controls.publishedDate.invalid"
-        />
-        <div class="invalid-feedback">Publiceringsdatum krävs.</div>
-      </div>
+      <hr class="my-4" />
 
       <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary" [disabled]="saving()">

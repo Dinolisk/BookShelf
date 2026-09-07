@@ -3,6 +3,7 @@ export interface Book {
   title: string;
   author: string;
   publishedDate: string; // ISO date (yyyy-MM-dd)
+  coverImageUrl: string | null;
 }
 
 export type BookRequest = Omit<Book, 'id'>;

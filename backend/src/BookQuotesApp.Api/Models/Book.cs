@@ -16,5 +16,8 @@ public class Book
 
     public DateOnly PublishedDate { get; set; }
 
+    [MaxLength(500)]
+    public string? CoverImageUrl { get; set; }
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

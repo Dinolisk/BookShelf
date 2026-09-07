@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BookService } from '../../core/book.service';
@@ -17,6 +17,17 @@ export class BookList {
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
   protected readonly deletingId = signal<number | null>(null);
+  protected readonly filter = signal('');
+
+  protected readonly visible = computed(() => {
+    const term = this.filter().trim().toLowerCase();
+    if (!term) {
+      return this.items();
+    }
+    return this.items().filter(
+      (b) => b.title.toLowerCase().includes(term) || b.author.toLowerCase().includes(term),
+    );
+  });
 
   constructor() {
     this.load();
@@ -52,5 +63,9 @@ export class BookList {
         this.deletingId.set(null);
       },
     });
+  }
+
+  onFilter(event: Event): void {
+    this.filter.set((event.target as HTMLInputElement).value);
   }
 }

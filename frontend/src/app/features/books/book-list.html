@@ -32,38 +32,61 @@
     </div>
   </div>
 } @else {
-  <div class="bq-card bg-body overflow-hidden">
-    <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead>
-          <tr>
-            <th scope="col">Titel</th>
-            <th scope="col">Författare</th>
-            <th scope="col">Publicerad</th>
-            <th scope="col" class="text-end">Åtgärder</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (book of items(); track book.id) {
-            <tr>
-              <td class="fw-semibold">{{ book.title }}</td>
-              <td>{{ book.author }}</td>
-              <td>
-                <span class="badge rounded-pill text-bg-secondary bg-opacity-10 text-body-secondary border">
-                  {{ book.publishedDate | date: 'y-MM-dd' }}
-                </span>
-              </td>
-              <td class="text-end text-nowrap">
+  <div class="row g-2 mb-4">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="input-group">
+        <span class="input-group-text bg-body"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Sök titel eller författare…"
+          [value]="filter()"
+          (input)="onFilter($event)"
+          aria-label="Sök böcker"
+        />
+      </div>
+    </div>
+  </div>
+
+  @if (visible().length === 0) {
+    <p class="text-body-secondary py-4">Inga böcker matchar ”{{ filter() }}”.</p>
+  } @else {
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 g-3 g-md-4">
+      @for (book of visible(); track book.id) {
+        <div class="col">
+          <article class="bq-card bg-body h-100 d-flex flex-column overflow-hidden">
+            <div class="book-cover">
+              @if (book.coverImageUrl) {
+                <img
+                  [src]="book.coverImageUrl"
+                  [alt]="'Omslag: ' + book.title"
+                  loading="lazy"
+                  (error)="book.coverImageUrl = null"
+                />
+              } @else {
+                <div class="book-cover__placeholder">
+                  <i class="fa-solid fa-book"></i>
+                </div>
+              }
+            </div>
+
+            <div class="p-3 d-flex flex-column flex-grow-1">
+              <h2 class="h6 mb-1 lh-sm">{{ book.title }}</h2>
+              <p class="small text-body-secondary mb-2">{{ book.author }}</p>
+              <p class="small text-body-secondary mb-3 mt-auto">
+                <i class="fa-regular fa-calendar me-1"></i>{{ book.publishedDate | date: 'y' }}
+              </p>
+              <div class="d-flex gap-2">
                 <a
                   [routerLink]="['/books', book.id, 'edit']"
-                  class="btn btn-sm btn-outline-secondary me-2"
+                  class="btn btn-sm btn-outline-secondary flex-fill"
                   title="Redigera"
                 >
-                  <i class="fa-solid fa-pen"></i><span class="d-none d-sm-inline ms-1">Redigera</span>
+                  <i class="fa-solid fa-pen"></i><span class="d-none d-lg-inline ms-1">Redigera</span>
                 </a>
                 <button
                   type="button"
-                  class="btn btn-sm btn-outline-danger"
+                  class="btn btn-sm btn-outline-danger flex-fill"
                   (click)="remove(book)"
                   [disabled]="deletingId() === book.id"
                   title="Radera"
@@ -73,13 +96,13 @@
                   } @else {
                     <i class="fa-solid fa-trash"></i>
                   }
-                  <span class="d-none d-sm-inline ms-1">Radera</span>
+                  <span class="d-none d-lg-inline ms-1">Radera</span>
                 </button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+              </div>
+            </div>
+          </article>
+        </div>
+      }
     </div>
-  </div>
+  }
 }

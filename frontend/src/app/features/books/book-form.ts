@@ -21,11 +21,13 @@ export class BookForm {
   protected readonly loading = signal(this.isEdit);
   protected readonly saving = signal(false);
   protected readonly error = signal<string | null>(null);
+  protected readonly coverFailed = signal(false);
 
   protected readonly form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.maxLength(200)]],
     author: ['', [Validators.required, Validators.maxLength(200)]],
     publishedDate: ['', [Validators.required]],
+    coverImageUrl: ['', [Validators.maxLength(500)]],
   });
 
   constructor() {
@@ -36,6 +38,7 @@ export class BookForm {
             title: book.title,
             author: book.author,
             publishedDate: book.publishedDate,
+            coverImageUrl: book.coverImageUrl ?? '',
           });
           this.loading.set(false);
         },
@@ -56,7 +59,13 @@ export class BookForm {
     this.saving.set(true);
     this.error.set(null);
 
-    const value = this.form.getRawValue();
+    const raw = this.form.getRawValue();
+    const value = {
+      title: raw.title.trim(),
+      author: raw.author.trim(),
+      publishedDate: raw.publishedDate,
+      coverImageUrl: raw.coverImageUrl.trim() || null,
+    };
     const request$: Observable<unknown> = this.isEdit
       ? this.books.update(Number(this.idParam), value)
       : this.books.create(value);

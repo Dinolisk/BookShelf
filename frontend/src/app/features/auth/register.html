@@ -1,74 +1,87 @@
-<div class="auth-wrap">
-  <div class="bq-card bg-body p-4 p-md-5 w-100" style="max-width: 25rem">
-    <div class="text-center mb-4">
-      <span class="empty-state__icon mb-2"><i class="fa-solid fa-user-plus"></i></span>
-      <h1 class="h4 mb-1">Skapa konto</h1>
-      <p class="text-body-secondary mb-0">Kom igång på under en minut</p>
+<div class="auth-split">
+  <aside class="auth-split__brand">
+    <div class="h2 fw-bold mb-2">
+      <i class="fa-solid fa-book-open-reader me-2"></i>BookQuotes
     </div>
-
-    @if (error()) {
-      <div class="alert alert-danger">{{ error() }}</div>
-    }
-
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <div class="mb-3">
-        <label for="username" class="form-label fw-medium">Användarnamn</label>
-        <input
-          id="username"
-          type="text"
-          class="form-control"
-          formControlName="username"
-          autocomplete="username"
-          [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid"
-        />
-        <div class="invalid-feedback">Användarnamn krävs (3–50 tecken).</div>
-      </div>
-
-      <div class="mb-3">
-        <label for="password" class="form-label fw-medium">Lösenord</label>
-        <input
-          id="password"
-          type="password"
-          class="form-control"
-          formControlName="password"
-          autocomplete="new-password"
-          [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid"
-        />
-        <div class="invalid-feedback">Lösenordet måste vara minst 6 tecken.</div>
-      </div>
-
-      <div class="mb-4">
-        <label for="confirmPassword" class="form-label fw-medium">Bekräfta lösenord</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          class="form-control"
-          formControlName="confirmPassword"
-          autocomplete="new-password"
-          [class.is-invalid]="
-            form.controls.confirmPassword.touched &&
-            (form.controls.confirmPassword.invalid || form.hasError('mismatch'))
-          "
-        />
-        <div class="invalid-feedback">
-          @if (form.controls.confirmPassword.hasError('required')) {
-            Bekräfta lösenordet.
-          } @else {
-            Lösenorden matchar inte.
-          }
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary w-100" [disabled]="submitting()">
-        @if (submitting()) {
-          <span class="spinner-border spinner-border-sm me-1"></span>
-        }
-        Skapa konto
-      </button>
-    </form>
-
-    <p class="mt-4 mb-0 text-center text-body-secondary">
-      Har du redan ett konto? <a routerLink="/login">Logga in</a>
+    <p class="fs-5 mb-0 opacity-75">
+      Skapa ett konto och börja bygga ditt eget bibliotek och din citatsamling.
     </p>
+    <ul class="list-unstyled mt-3 mb-0 opacity-75 small">
+      <li class="mb-2"><i class="fa-solid fa-check me-2"></i>Gratis och klart på en minut</li>
+      <li class="mb-2"><i class="fa-solid fa-check me-2"></i>Dina citat är privata</li>
+      <li><i class="fa-solid fa-check me-2"></i>Fungerar på mobil och dator</li>
+    </ul>
+  </aside>
+
+  <div class="auth-split__form">
+    <div class="mx-auto w-100" style="max-width: 22rem">
+      <h1 class="h4 mb-1">Skapa konto</h1>
+      <p class="text-body-secondary mb-4">Kom igång på under en minut</p>
+
+      @if (error()) {
+        <div class="alert alert-danger">{{ error() }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="mb-3">
+          <label for="username" class="form-label fw-medium">Användarnamn</label>
+          <input
+            id="username"
+            type="text"
+            class="form-control"
+            formControlName="username"
+            autocomplete="username"
+            [class.is-invalid]="form.controls.username.touched && form.controls.username.invalid"
+          />
+          <div class="invalid-feedback">Användarnamn krävs (3–50 tecken).</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label fw-medium">Lösenord</label>
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            formControlName="password"
+            autocomplete="new-password"
+            [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid"
+          />
+          <div class="invalid-feedback">Lösenordet måste vara minst 6 tecken.</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="confirmPassword" class="form-label fw-medium">Bekräfta lösenord</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            class="form-control"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            [class.is-invalid]="
+              form.controls.confirmPassword.touched &&
+              (form.controls.confirmPassword.invalid || form.hasError('mismatch'))
+            "
+          />
+          <div class="invalid-feedback">
+            @if (form.controls.confirmPassword.hasError('required')) {
+              Bekräfta lösenordet.
+            } @else {
+              Lösenorden matchar inte.
+            }
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" [disabled]="submitting()">
+          @if (submitting()) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+          }
+          Skapa konto
+        </button>
+      </form>
+
+      <p class="mt-4 mb-0 text-center text-body-secondary">
+        Har du redan ett konto? <a routerLink="/login">Logga in</a>
+      </p>
+    </div>
   </div>
 </div>

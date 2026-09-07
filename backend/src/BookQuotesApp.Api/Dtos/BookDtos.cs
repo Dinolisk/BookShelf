@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookQuotesApp.Api.Dtos;
 
-public record BookResponse(int Id, string Title, string Author, DateOnly PublishedDate);
+public record BookResponse(int Id, string Title, string Author, DateOnly PublishedDate, string? CoverImageUrl);
 
 public class BookRequest
 {
@@ -16,4 +16,8 @@ public class BookRequest
 
     [Required]
     public DateOnly PublishedDate { get; set; }
+
+    [MaxLength(500)]
+    [Url]
+    public string? CoverImageUrl { get; set; }
 }

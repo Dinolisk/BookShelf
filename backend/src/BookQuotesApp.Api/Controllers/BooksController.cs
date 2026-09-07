@@ -17,7 +17,7 @@ public class BooksController(AppDbContext db) : ControllerBase
     {
         var books = await db.Books
             .OrderByDescending(b => b.CreatedAt)
-            .Select(b => new BookResponse(b.Id, b.Title, b.Author, b.PublishedDate))
+            .Select(b => new BookResponse(b.Id, b.Title, b.Author, b.PublishedDate, b.CoverImageUrl))
             .ToListAsync();
 
         return Ok(books);
@@ -30,7 +30,7 @@ public class BooksController(AppDbContext db) : ControllerBase
         if (book is null)
             return NotFound();
 
-        return Ok(new BookResponse(book.Id, book.Title, book.Author, book.PublishedDate));
+        return Ok(new BookResponse(book.Id, book.Title, book.Author, book.PublishedDate, book.CoverImageUrl));
     }
 
     [HttpPost]
@@ -41,12 +41,13 @@ public class BooksController(AppDbContext db) : ControllerBase
             Title = request.Title,
             Author = request.Author,
             PublishedDate = request.PublishedDate,
+            CoverImageUrl = Normalize(request.CoverImageUrl),
         };
 
         db.Books.Add(book);
         await db.SaveChangesAsync();
 
-        var response = new BookResponse(book.Id, book.Title, book.Author, book.PublishedDate);
+        var response = new BookResponse(book.Id, book.Title, book.Author, book.PublishedDate, book.CoverImageUrl);
         return CreatedAtAction(nameof(GetById), new { id = book.Id }, response);
     }
 
@@ -60,6 +61,7 @@ public class BooksController(AppDbContext db) : ControllerBase
         book.Title = request.Title;
         book.Author = request.Author;
         book.PublishedDate = request.PublishedDate;
+        book.CoverImageUrl = Normalize(request.CoverImageUrl);
 
         await db.SaveChangesAsync();
         return NoContent();
@@ -76,4 +78,7 @@ public class BooksController(AppDbContext db) : ControllerBase
         await db.SaveChangesAsync();
         return NoContent();
     }
+
+    private static string? Normalize(string? value) =>
+        string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 }
