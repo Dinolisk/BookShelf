@@ -1,10 +1,10 @@
 # Netlify build config for the Angular frontend (monorepo: app lives in /frontend).
+# base = where to run the build; command + publish are resolved relative to base.
 
 [build]
   base = "frontend"
   command = "npm run build"
-  # publish is resolved from the repo root even when base is set:
-  publish = "frontend/dist/bookquotes-web/browser"
+  publish = "dist/bookquotes-web/browser"
 
 [build.environment]
   NODE_VERSION = "22"
