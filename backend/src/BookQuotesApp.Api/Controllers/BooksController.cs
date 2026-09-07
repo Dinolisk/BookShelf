@@ -1,12 +1,14 @@
 using BookQuotesApp.Api.Data;
 using BookQuotesApp.Api.Dtos;
 using BookQuotesApp.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookQuotesApp.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class BooksController(AppDbContext db) : ControllerBase
 {

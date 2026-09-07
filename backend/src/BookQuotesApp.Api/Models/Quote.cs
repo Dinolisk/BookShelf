@@ -16,5 +16,7 @@ public class Quote
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    // Owner is added in the auth step (each user manages their own quotes).
+    // Each quote belongs to the user who created it.
+    public int UserId { get; set; }
+    public User? User { get; set; }
 }
