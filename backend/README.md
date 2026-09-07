@@ -4,26 +4,23 @@
 
 ## Kör lokalt
 
-1. Sätt connection string till Neon-databasen (sparas utanför git via user-secrets):
+1. Sätt connection string till Neon-databasen (sparas utanför git via user-secrets).
+   Både Neons URL-format och Npgsql:s nyckel-värde-format accepteras:
 
    ```bash
    cd src/BookQuotesApp.Api
-   dotnet user-secrets set "ConnectionStrings:Default" "Host=...;Database=...;Username=...;Password=...;SSL Mode=Require"
+   dotnet user-secrets set "ConnectionStrings:Default" "postgresql://user:pass@ep-xxx.eu-central-1.aws.neon.tech/neondb?sslmode=require"
    ```
 
-2. Kör migrationerna mot databasen:
-
-   ```bash
-   dotnet ef database update
-   ```
-
-3. Starta API:t:
+2. Starta API:t (migrationer körs automatiskt vid uppstart):
 
    ```bash
    dotnet run
    ```
 
    Swagger UI: `https://localhost:<port>/swagger`
+
+I produktion (Render) sätts samma värde som miljövariabeln `ConnectionStrings__Default`.
 
 ## Endpoints (steg 2)
 

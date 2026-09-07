@@ -4,15 +4,16 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // --- Database ---
+var connectionString = DatabaseConnection.Resolve(builder.Configuration.GetConnectionString("Default"));
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+    options.UseNpgsql(connectionString, npgsql => npgsql.EnableRetryOnFailure()));
 
 // --- MVC / API ---
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// --- CORS for the Angular dev server ---
+// --- CORS for the Angular front-end ---
 const string CorsPolicy = "frontend";
 builder.Services.AddCors(options =>
     options.AddPolicy(CorsPolicy, policy => policy
@@ -21,6 +22,13 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod()));
 
 var app = builder.Build();
+
+// Apply pending migrations on startup so no manual step is needed on Render.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {
