@@ -60,6 +60,32 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* --- Mobile menu: account section as a clean vertical stack --- */
+@media (max-width: 767.98px) {
+  #mainNav {
+    padding-block: 0.25rem 0.5rem;
+  }
+
+  .navbar-account {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--bq-border);
+  }
+
+  .navbar-account .btn {
+    width: 100%;
+    text-align: start;
+  }
+
+  .navbar-account .navbar-text {
+    padding-block: 0.15rem;
+  }
+}
+
 /* --- Accent --- */
 .btn-primary {
   --bs-btn-bg: var(--bq-accent);

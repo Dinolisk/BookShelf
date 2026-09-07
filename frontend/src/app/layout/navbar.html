@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom">
   <div class="container">
     <a class="navbar-brand fw-semibold" routerLink="/books">
-      <i class="fa-solid fa-book-open-reader me-2"></i>BookQuotes
+      <i class="fa-solid fa-book-open-reader me-2"></i>Bookshelf
     </a>
 
     <button
@@ -18,7 +18,7 @@
 
     <div class="collapse navbar-collapse" id="mainNav">
       @if (auth.isLoggedIn()) {
-        <ul class="navbar-nav mx-auto mb-2 mb-md-0">
+        <ul class="navbar-nav mx-md-auto mb-2 mb-md-0">
           <li class="nav-item">
             <a class="nav-link" routerLink="/books" routerLinkActive="active">
               <i class="fa-solid fa-book me-1"></i>Böcker
@@ -32,9 +32,9 @@
         </ul>
       }
 
-      <div class="d-flex align-items-center gap-2 flex-wrap py-2 py-md-0 ms-md-auto">
+      <div class="navbar-account d-flex align-items-center gap-2 ms-md-auto">
         @if (auth.isLoggedIn()) {
-          <span class="navbar-text me-1">
+          <span class="navbar-text me-md-1">
             <i class="fa-solid fa-user me-1"></i>{{ auth.username() }}
           </span>
           <button class="btn btn-outline-secondary btn-sm" (click)="logout()">
@@ -55,13 +55,13 @@
           [attr.aria-label]="
             theme.theme() === 'dark' ? 'Byt till ljust tema' : 'Byt till mörkt tema'
           "
-          [title]="theme.theme() === 'dark' ? 'Ljust tema' : 'Mörkt tema'"
         >
           @if (theme.theme() === 'dark') {
             <i class="fa-solid fa-sun"></i>
           } @else {
             <i class="fa-solid fa-moon"></i>
           }
+          <span class="d-md-none ms-2">{{ theme.theme() === 'dark' ? 'Ljust tema' : 'Mörkt tema' }}</span>
         </button>
       </div>
     </div>
