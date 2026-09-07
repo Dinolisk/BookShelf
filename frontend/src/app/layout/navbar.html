@@ -4,17 +4,35 @@
       <i class="fa-solid fa-book-open-reader me-2"></i>BookQuotes
     </a>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#mainNav"
-      aria-controls="mainNav"
-      aria-expanded="false"
-      aria-label="Växla navigering"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="d-flex align-items-center gap-2 order-md-last">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm"
+        (click)="theme.toggle()"
+        [attr.aria-label]="
+          theme.theme() === 'dark' ? 'Byt till ljust tema' : 'Byt till mörkt tema'
+        "
+        [title]="theme.theme() === 'dark' ? 'Ljust tema' : 'Mörkt tema'"
+      >
+        @if (theme.theme() === 'dark') {
+          <i class="fa-solid fa-sun"></i>
+        } @else {
+          <i class="fa-solid fa-moon"></i>
+        }
+      </button>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNav"
+        aria-controls="mainNav"
+        aria-expanded="false"
+        aria-label="Växla navigering"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
 
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">

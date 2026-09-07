@@ -12,3 +12,8 @@ body {
 .nav-link.active {
   font-weight: 600;
 }
+
+/* Constrain long forms on wide screens without pulling in grid gutters. */
+.bq-form-narrow {
+  max-width: 32rem;
+}
