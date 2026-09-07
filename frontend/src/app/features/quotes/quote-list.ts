@@ -3,10 +3,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { QuoteService } from '../../core/quote.service';
 import { Quote } from '../../core/models';
+import { PageHeader } from '../../layout/page-header';
 
 @Component({
   selector: 'app-quote-list',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PageHeader],
   templateUrl: './quote-list.html',
 })
 export class QuoteList {

@@ -3,10 +3,11 @@ import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BookService } from '../../core/book.service';
 import { Book } from '../../core/models';
+import { PageHeader } from '../../layout/page-header';
 
 @Component({
   selector: 'app-book-list',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, PageHeader],
   templateUrl: './book-list.html',
 })
 export class BookList {

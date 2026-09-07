@@ -1,6 +1,10 @@
-<div class="row justify-content-center">
-  <div class="col-sm-9 col-md-6 col-lg-4">
-    <h1 class="h3 mb-4"><i class="fa-solid fa-right-to-bracket me-2"></i>Logga in</h1>
+<div class="auth-wrap">
+  <div class="bq-card bg-body p-4 p-md-5 w-100" style="max-width: 25rem">
+    <div class="text-center mb-4">
+      <span class="empty-state__icon mb-2"><i class="fa-solid fa-book-open-reader"></i></span>
+      <h1 class="h4 mb-1">Välkommen tillbaka</h1>
+      <p class="text-body-secondary mb-0">Logga in för att hantera böcker och citat</p>
+    </div>
 
     @if (error()) {
       <div class="alert alert-danger">{{ error() }}</div>
@@ -8,7 +12,7 @@
 
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
       <div class="mb-3">
-        <label for="username" class="form-label">Användarnamn</label>
+        <label for="username" class="form-label fw-medium">Användarnamn</label>
         <input
           id="username"
           type="text"
@@ -21,7 +25,7 @@
       </div>
 
       <div class="mb-4">
-        <label for="password" class="form-label">Lösenord</label>
+        <label for="password" class="form-label fw-medium">Lösenord</label>
         <input
           id="password"
           type="password"
@@ -41,7 +45,7 @@
       </button>
     </form>
 
-    <p class="mt-3 mb-0 text-center">
+    <p class="mt-4 mb-0 text-center text-body-secondary">
       Ny här? <a routerLink="/register">Skapa konto</a>
     </p>
   </div>

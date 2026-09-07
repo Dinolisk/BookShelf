@@ -3,10 +3,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { BookService } from '../../core/book.service';
+import { PageHeader } from '../../layout/page-header';
 
 @Component({
   selector: 'app-book-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, PageHeader],
   templateUrl: './book-form.html',
 })
 export class BookForm {

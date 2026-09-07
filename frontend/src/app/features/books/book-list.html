@@ -1,9 +1,16 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h3 mb-0"><i class="fa-solid fa-book me-2"></i>Böcker</h1>
+<app-page-header
+  title="Böcker"
+  icon="fa-book"
+  [subtitle]="
+    !loading() && !error()
+      ? (items().length === 1 ? '1 bok i biblioteket' : items().length + ' böcker i biblioteket')
+      : undefined
+  "
+>
   <a routerLink="/books/new" class="btn btn-primary">
     <i class="fa-solid fa-plus me-1"></i>Lägg till ny bok
   </a>
-</div>
+</app-page-header>
 
 @if (loading()) {
   <div class="text-center py-5 text-body-secondary">
@@ -15,46 +22,64 @@
     <button class="btn btn-sm btn-outline-danger" (click)="load()">Försök igen</button>
   </div>
 } @else if (items().length === 0) {
-  <div class="text-center py-5 text-body-secondary">
-    <i class="fa-solid fa-book-open fa-2x mb-3 d-block"></i>
-    Inga böcker än. Klicka på <strong>Lägg till ny bok</strong> för att börja.
+  <div class="bq-card bg-body">
+    <div class="empty-state">
+      <span class="empty-state__icon"><i class="fa-solid fa-book-open"></i></span>
+      <p class="mb-3">Inga böcker än. Lägg till din första bok för att komma igång.</p>
+      <a routerLink="/books/new" class="btn btn-primary">
+        <i class="fa-solid fa-plus me-1"></i>Lägg till ny bok
+      </a>
+    </div>
   </div>
 } @else {
-  <div class="table-responsive">
-    <table class="table align-middle">
-      <thead>
-        <tr>
-          <th scope="col">Titel</th>
-          <th scope="col">Författare</th>
-          <th scope="col">Publicerad</th>
-          <th scope="col" class="text-end">Åtgärder</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (book of items(); track book.id) {
+  <div class="bq-card bg-body overflow-hidden">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
           <tr>
-            <td class="fw-medium">{{ book.title }}</td>
-            <td>{{ book.author }}</td>
-            <td>{{ book.publishedDate | date: 'y-MM-dd' }}</td>
-            <td class="text-end text-nowrap">
-              <a
-                [routerLink]="['/books', book.id, 'edit']"
-                class="btn btn-sm btn-outline-secondary me-2"
-              >
-                <i class="fa-solid fa-pen"></i><span class="d-none d-sm-inline ms-1">Redigera</span>
-              </a>
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-danger"
-                (click)="remove(book)"
-                [disabled]="deletingId() === book.id"
-              >
-                <i class="fa-solid fa-trash"></i><span class="d-none d-sm-inline ms-1">Radera</span>
-              </button>
-            </td>
+            <th scope="col">Titel</th>
+            <th scope="col">Författare</th>
+            <th scope="col">Publicerad</th>
+            <th scope="col" class="text-end">Åtgärder</th>
           </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @for (book of items(); track book.id) {
+            <tr>
+              <td class="fw-semibold">{{ book.title }}</td>
+              <td>{{ book.author }}</td>
+              <td>
+                <span class="badge rounded-pill text-bg-secondary bg-opacity-10 text-body-secondary border">
+                  {{ book.publishedDate | date: 'y-MM-dd' }}
+                </span>
+              </td>
+              <td class="text-end text-nowrap">
+                <a
+                  [routerLink]="['/books', book.id, 'edit']"
+                  class="btn btn-sm btn-outline-secondary me-2"
+                  title="Redigera"
+                >
+                  <i class="fa-solid fa-pen"></i><span class="d-none d-sm-inline ms-1">Redigera</span>
+                </a>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="remove(book)"
+                  [disabled]="deletingId() === book.id"
+                  title="Radera"
+                >
+                  @if (deletingId() === book.id) {
+                    <span class="spinner-border spinner-border-sm"></span>
+                  } @else {
+                    <i class="fa-solid fa-trash"></i>
+                  }
+                  <span class="d-none d-sm-inline ms-1">Radera</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
 }

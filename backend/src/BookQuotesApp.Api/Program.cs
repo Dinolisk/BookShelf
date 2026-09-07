@@ -65,11 +65,12 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Apply pending migrations on startup so no manual step is needed on Render.
+// Apply pending migrations on startup so no manual step is needed on Render, then seed sample books.
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
+    await DbSeeder.SeedAsync(db);
 }
 
 if (app.Environment.IsDevelopment())

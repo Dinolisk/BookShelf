@@ -1,19 +1,152 @@
 /* Global styles. Bootstrap and Font Awesome are loaded via angular.json. */
 
+:root {
+  --bq-accent: #4f46e5;
+  --bq-accent-hover: #4338ca;
+}
+
+:root[data-bs-theme='dark'] {
+  --bq-accent: #818cf8;
+  --bq-accent-hover: #a5b4fc;
+}
+
 html,
 body {
   min-height: 100%;
 }
 
 body {
+  margin: 0;
   background-color: var(--bs-body-bg);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Give the app a calm, elevated feel: tinted page, white/dark surfaces. */
+body {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.navbar {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.navbar-brand {
+  letter-spacing: -0.01em;
+}
+
+/* --- Accent buttons --- */
+.btn-primary {
+  --bs-btn-bg: var(--bq-accent);
+  --bs-btn-border-color: var(--bq-accent);
+  --bs-btn-hover-bg: var(--bq-accent-hover);
+  --bs-btn-hover-border-color: var(--bq-accent-hover);
+  --bs-btn-active-bg: var(--bq-accent-hover);
+  --bs-btn-active-border-color: var(--bq-accent-hover);
+  --bs-btn-disabled-bg: var(--bq-accent);
+  --bs-btn-disabled-border-color: var(--bq-accent);
+}
+
+a {
+  color: var(--bq-accent);
 }
 
 .nav-link.active {
   font-weight: 600;
+  color: var(--bq-accent) !important;
 }
 
-/* Constrain long forms on wide screens without pulling in grid gutters. */
+/* --- Page header (title + actions) --- */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+.page-header__title {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.page-header__subtitle {
+  margin: 0.25rem 0 0;
+  color: var(--bs-secondary-color);
+}
+
+/* --- Cards --- */
+.card {
+  border-color: var(--bs-border-color);
+}
+
+.bq-card {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.9rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Table --- */
+.table > :not(caption) > * > * {
+  padding: 0.85rem 1rem;
+}
+
+.table thead th {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--bs-secondary-color);
+}
+
+/* --- Quote cards --- */
+.quote-card {
+  border-left: 4px solid var(--bq-accent);
+}
+
+.quote-card blockquote {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* --- Constrain long forms without pulling in grid gutters --- */
 .bq-form-narrow {
-  max-width: 32rem;
+  max-width: 34rem;
+}
+
+.auth-wrap {
+  min-height: calc(100dvh - 220px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Empty state --- */
+.empty-state {
+  text-align: center;
+  padding: 3.5rem 1rem;
+  color: var(--bs-secondary-color);
+}
+
+.empty-state__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: var(--bs-tertiary-bg);
+  color: var(--bq-accent);
+  font-size: 1.5rem;
+}
+
+/* --- Footer --- */
+.app-footer {
+  border-top: 1px solid var(--bs-border-color);
+  color: var(--bs-secondary-color);
+  font-size: 0.875rem;
 }
