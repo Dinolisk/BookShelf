@@ -4,5 +4,5 @@
 // No trailing slash.
 export const environment = {
   production: true,
-  apiUrl: 'https://bookshelf-api.onrender.com',
+  apiUrl: 'https://bookshelf-api-arwm.onrender.com',
 };
