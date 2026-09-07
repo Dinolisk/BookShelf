@@ -1,17 +1,46 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink],
-  template: `
-    <div class="row justify-content-center">
-      <div class="col-sm-8 col-md-5 col-lg-4">
-        <h1 class="h3 mb-4">Logga in</h1>
-        <p class="text-body-secondary">Inloggningsformuläret byggs i steg 6.</p>
-        <p class="mt-3">Ny här? <a routerLink="/register">Skapa konto</a></p>
-      </div>
-    </div>
-  `,
+  imports: [ReactiveFormsModule, RouterLink],
+  templateUrl: './login.html',
 })
-export class Login {}
+export class Login {
+  private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  protected readonly submitting = signal(false);
+  protected readonly error = signal<string | null>(null);
+
+  protected readonly form = this.fb.nonNullable.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+  });
+
+  submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.submitting.set(true);
+    this.error.set(null);
+
+    const { username, password } = this.form.getRawValue();
+    this.auth.login(username, password).subscribe({
+      next: () => {
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/books';
+        this.router.navigateByUrl(returnUrl);
+      },
+      error: (err) => {
+        this.error.set(err.error?.message ?? 'Inloggningen misslyckades. Försök igen.');
+        this.submitting.set(false);
+      },
+    });
+  }
+}

@@ -41,4 +41,5 @@ src/app/
 | `/quotes` | Mina citat |
 | `/login`, `/register` | Autentisering |
 
-Route guards som kräver inloggning läggs till i steg 6.
+`/books*` och `/quotes` skyddas av `authGuard` (skickar till `/login?returnUrl=…`).
+`/login` och `/register` skyddas av `guestGuard` (redan inloggad → `/books`).
