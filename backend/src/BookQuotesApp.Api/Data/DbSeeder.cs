@@ -56,4 +56,19 @@ public static class DbSeeder
 
         await db.SaveChangesAsync();
     }
+
+    /// <summary>Five favourite quotes given to every new account so the "Mina citat" view starts populated.</summary>
+    public static List<Quote> StarterQuotes() =>
+    [
+        new() { Text = "Not all those who wander are lost.", Author = "J.R.R. Tolkien" },
+        new()
+        {
+            Text = "It is a truth universally acknowledged, that a single man in possession of a good "
+                   + "fortune, must be in want of a wife.",
+            Author = "Jane Austen",
+        },
+        new() { Text = "So it goes.", Author = "Kurt Vonnegut" },
+        new() { Text = "Whatever our souls are made of, his and mine are the same.", Author = "Emily Brontë" },
+        new() { Text = "The only way to get rid of a temptation is to yield to it.", Author = "Oscar Wilde" },
+    ];
 }
